@@ -24,8 +24,7 @@ require 'rbconfig'
 require 'rake/clean'
 require 'rdoc/task'
 require 'rubygems'
-require 'rubygems/builder'
-
+require 'rubygems/package'
 # By default, windows will try to use nmake instead of make. If you are on windows but using
 # a different compiler that uses standard make, set this to false.
 USE_NMAKE_ON_WIN = true
@@ -97,14 +96,14 @@ file "advantage-#{pkg_version}-#{spec.platform}.gem" => ["Rakefile",
    # Set the gem to be platform specific since it includes compiled binaries
    spec.platform = Gem::Platform::CURRENT
    #spec.extensions = ''
-   Gem::Builder.new(spec).build
+   Gem::Package.build(spec)
 end
 
 # Builds the source gem for any platform
 desc "Build the source gem"
-task :source_gem => ["advantage.gem"]
+task :source_gem => ["advantage-#{pkg_version}.gem"]
 
-file "advantage.gem" => ["Rakefile",
+file "advantage-#{pkg_version}.gem" => ["Rakefile",
                                           "test/test.sql",
                                           "test/advantage_test.rb",
                                           "README",
@@ -113,7 +112,7 @@ file "advantage.gem" => ["Rakefile",
    spec.files = Dir['ext/**/*'] + Dir['lib/**/*'] + Dir['test/**/*'] + Dir['LICENSE'] + Dir['README'] + Dir['Rakefile']
    # Since this contains no compilked binaries, set it to be platform RUBY
    spec.extensions = 'ext/extconf.rb'
-   Gem::Builder.new(spec).build
+   Gem::Package.build(spec)
 end
 
 file File.join("lib", library_file) => [File.join("ext", library_file)] do
