@@ -102,9 +102,9 @@ end
 
 # Builds the source gem for any platform
 desc "Build the source gem"
-task :source_gem => ["advantage-#{pkg_version}.gem"]
+task :source_gem => ["advantage.gem"]
 
-file "advantage-#{pkg_version}.gem" => ["Rakefile",
+file "advantage.gem" => ["Rakefile",
                                           "test/test.sql",
                                           "test/advantage_test.rb",
                                           "README",
